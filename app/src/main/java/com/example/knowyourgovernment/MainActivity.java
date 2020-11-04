@@ -1,10 +1,13 @@
 package com.example.knowyourgovernment;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -57,4 +60,28 @@ public class MainActivity extends AppCompatActivity
     public boolean onLongClick(View v) {
         return false;
     }
+
+    // menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuInfoItem:
+                // launch about activity here
+                return true;
+            case R.id.menuLocationItem:
+                // open alert dialog that allows user to enter city/state or zip to update location
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 }
