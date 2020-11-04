@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">KnowYourGovernment</string>
+    <string name="app_name">Know Your Government</string>
     <string name="list_separator">List Separator</string>
+    <string name="menuInfoItemText">Information</string>
+    <string name="menuLocationItemText">Update Location</string>
 </resources>

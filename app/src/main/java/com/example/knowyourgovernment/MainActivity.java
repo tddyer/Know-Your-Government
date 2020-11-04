@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        // do on click stuff here
+        int pos = recyclerView.getChildLayoutPosition(v);
+        Official o = officialList.get(pos);
+        Toast.makeText(this, "You selected official " + pos, Toast.LENGTH_SHORT).show();
     }
 
     @Override
