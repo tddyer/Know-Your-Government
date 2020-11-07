@@ -3,12 +3,21 @@ package com.example.knowyourgovernment;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,17 +30,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class MainActivity extends AppCompatActivity
     implements View.OnClickListener, View.OnLongClickListener {
 
+    // officials recyclerview vars
     private List<Official> officialList = new ArrayList<>();
     private RecyclerView recyclerView;
     private OfficialsAdapter officialsAdapter;
+
+    // location service vars
+    private LocationManager locationManager;
+    private Criteria criteria;
+    Location desiredLocation = null; // starts as device location, can be updated to alternate locations
+    private static int LOCATION_REQUEST_CODE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // setting initial location to location of the device
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        criteria = new Criteria();
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setSpeedRequired(false);
+
+        // location permissions
+        //   - if already granted => set location
+        //   - else, request permissions and execute onRequestPermissionsResult()
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                new String[] {
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                },
+                LOCATION_REQUEST_CODE);
+        } else {
+            setLocation();
+        }
+
 
         // recycler setup
         recyclerView = findViewById(R.id.officialsRecyclerView);
@@ -52,6 +96,31 @@ public class MainActivity extends AppCompatActivity
             officialList.add(temp);
         }
         officialsAdapter.notifyDataSetChanged();
+    }
+
+    // location services
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    grantResults[0] == PERMISSION_GRANTED) {
+                setLocation();
+                return;
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void setLocation() {
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+
+        if (bestProvider != null) {
+            desiredLocation = locationManager.getLastKnownLocation(bestProvider);
+            Log.d("LOCATIONS", "setLocation: " + desiredLocation.getLatitude());
+        }
     }
 
     // Overriding onClick methods

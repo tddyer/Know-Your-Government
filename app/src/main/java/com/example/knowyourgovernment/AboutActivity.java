@@ -21,7 +21,5 @@ public class AboutActivity extends AppCompatActivity {
         // add link to google civic api
         TextView googleLink = findViewById(R.id.googleAPITextView);
         googleLink.setMovementMethod(LinkMovementMethod.getInstance());
-//        Linkify.addLinks(googleLink, 0);
-//
     }
 }
