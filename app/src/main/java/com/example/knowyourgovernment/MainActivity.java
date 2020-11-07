@@ -129,13 +129,16 @@ public class MainActivity extends AppCompatActivity
         if (bestProvider != null) {
             try {
                 desiredLocation = locationManager.getLastKnownLocation(bestProvider);
-                List<Address> addresses = geocoder.getFromLocation(desiredLocation.getLatitude(),
-                                                                    desiredLocation.getLongitude(),
-                                                                    3);
-                locationZipCode = addresses.get(0).getPostalCode();
-                locationState = addresses.get(0).getAdminArea();
-                locationCity = addresses.get(0).getLocality();
-                Log.d("LOCATIONS", "SETLOCATION: " + locationCity + ", " + locationState + " " + locationZipCode);
+
+                // converting coordinates to address
+                if (desiredLocation != null) {
+                    List<Address> addresses = geocoder.getFromLocation(desiredLocation.getLatitude(),
+                            desiredLocation.getLongitude(),
+                            1);
+                    locationZipCode = addresses.get(0).getPostalCode();
+                    locationState = addresses.get(0).getAdminArea();
+                    locationCity = addresses.get(0).getLocality();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
