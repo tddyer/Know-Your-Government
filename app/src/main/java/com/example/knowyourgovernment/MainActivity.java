@@ -12,7 +12,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +47,11 @@ public class MainActivity extends AppCompatActivity
     private LocationManager locationManager;
     private Criteria criteria;
     Location desiredLocation = null; // starts as device location, can be updated to alternate locations
+    private String locationZipCode = null;
+    private String locationCity = null;
+    private String locationState = null;
     private static int LOCATION_REQUEST_CODE = 1001;
+    private Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,8 @@ public class MainActivity extends AppCompatActivity
         criteria.setAltitudeRequired(false);
         criteria.setBearingRequired(false);
         criteria.setSpeedRequired(false);
+
+        geocoder = new Geocoder(this);
 
         // location permissions
         //   - if already granted => set location
@@ -118,8 +127,18 @@ public class MainActivity extends AppCompatActivity
         String bestProvider = locationManager.getBestProvider(criteria, true);
 
         if (bestProvider != null) {
-            desiredLocation = locationManager.getLastKnownLocation(bestProvider);
-            Log.d("LOCATIONS", "setLocation: " + desiredLocation.getLatitude());
+            try {
+                desiredLocation = locationManager.getLastKnownLocation(bestProvider);
+                List<Address> addresses = geocoder.getFromLocation(desiredLocation.getLatitude(),
+                                                                    desiredLocation.getLongitude(),
+                                                                    3);
+                locationZipCode = addresses.get(0).getPostalCode();
+                locationState = addresses.get(0).getAdminArea();
+                locationCity = addresses.get(0).getLocality();
+                Log.d("LOCATIONS", "SETLOCATION: " + locationCity + ", " + locationState + " " + locationZipCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
