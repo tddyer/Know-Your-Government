@@ -23,13 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/purple_theme"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="Chicago, IL 60616"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,13 +38,13 @@
                 android:id="@+id/officialPositionTextViewOfficial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="U.S. Senator"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/locationTextViewOfficial" />
@@ -53,13 +53,13 @@
                 android:id="@+id/officialNameTextViewOfficial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="Tammy Duckworth"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/officialPositionTextViewOfficial" />
@@ -68,13 +68,13 @@
                 android:id="@+id/officialPartyTextViewOfficial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="(Democratic Party)"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/officialNameTextViewOfficial" />
@@ -88,65 +88,129 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/officialPartyTextViewOfficial" />
 
-            <TextView
-                android:id="@+id/addressTextViewOfficial"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/addressHorizontalLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Address:"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/officialImageView" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/phoneTextViewOfficial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone:"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addressTextViewOfficial" />
+                <TextView
+                    android:id="@+id/addressPlaceholderTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/addressPlaceholder"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry"/>
 
-            <TextView
-                android:id="@+id/emailTextViewOfficial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email:"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phoneTextViewOfficial" />
+                <TextView
+                    android:id="@+id/addressTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:paddingTop="10dp"
+                    android:text="This is an example address that should be on two lines"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/websiteTextViewOfficial"
-                android:layout_width="wrap_content"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phoneHorizontalLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Website:"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/emailTextViewOfficial" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/phonePlaceholderTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/phonePlaceholder"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/phoneTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:paddingTop="10dp"
+                    android:text="(847) 856-9873"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/emailHorizontalLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/emailPlaceholderTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/emailPlaceholder"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/emailTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:paddingTop="10dp"
+                    android:text="tdyer@hawk.iit.edu"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/websiteHorizontalLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/websitePlaceholderTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/websitePlaceholder"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/websiteTextViewOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:paddingTop="10dp"
+                    android:text="https://www.duckworth.senate.gov"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

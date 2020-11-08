@@ -14,4 +14,8 @@
     <string name="version">Version 1.0</string>
     <string name="dgoogle_api"><a href="https://developers.google.com/civic-information/">Google Civic Information API</a></string>
     <string name="google_api">Google Civic Information API</string>
+    <string name="websitePlaceholder">Website:</string>
+    <string name="emailPlaceholder">Email:</string>
+    <string name="phonePlaceholder">Phone:</string>
+    <string name="addressPlaceholder">Address:</string>
 </resources>
