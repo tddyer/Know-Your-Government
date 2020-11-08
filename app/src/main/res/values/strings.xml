@@ -18,4 +18,7 @@
     <string name="emailPlaceholder">Email:</string>
     <string name="phonePlaceholder">Phone:</string>
     <string name="addressPlaceholder">Address:</string>
+    <string name="youtube_icon">Youtube Icon</string>
+    <string name="twitter_icon">Twitter Icon</string>
+    <string name="facebook_icon">Facebook Icon</string>
 </resources>
