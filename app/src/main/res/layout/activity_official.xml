@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue"
     tools:context=".OfficialActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blue"
+        android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="167dp"
         tools:layout_editor_absoluteY="200dp">
 
@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/officialPositionTextViewOfficial"
+            android:id="@+id/officialTitleTextViewOfficial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
@@ -55,7 +55,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/officialPositionTextViewOfficial" />
+            app:layout_constraintTop_toBottomOf="@id/officialTitleTextViewOfficial" />
 
         <TextView
             android:id="@+id/officialPartyTextViewOfficial"
@@ -75,22 +75,25 @@
             android:id="@+id/officialImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:src="@drawable/missing"
-            android:paddingTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/officialPartyTextViewOfficial" />
+            app:layout_constraintTop_toBottomOf="@id/officialPartyTextViewOfficial"
+            android:contentDescription="@string/political_official_image" />
 
         <ImageView
             android:id="@+id/partyImageView"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/dem_logo"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
+            android:src="@drawable/dem_logo"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/officialImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/officialImageView" />
+            android:contentDescription="@string/politial_official_party_image" />
 
         <LinearLayout
             android:id="@+id/addressHorizontalLayout"

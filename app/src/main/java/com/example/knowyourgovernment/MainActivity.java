@@ -151,12 +151,23 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         int pos = recyclerView.getChildLayoutPosition(v);
         Official o = officialList.get(pos);
-        Toast.makeText(this, "You selected official " + pos, Toast.LENGTH_SHORT).show();
+        launchOfficialActivity(o, pos);
     }
 
     @Override
     public boolean onLongClick(View v) {
         return false;
+    }
+
+    // activity navigation
+
+    void launchOfficialActivity(Official o, int pos) {
+        Intent intent = new Intent(this, OfficialActivity.class);
+        intent.putExtra("OFFICIAL_NAME", o.getName());
+        intent.putExtra("OFFICIAL_TITLE", o.getTitle());
+        intent.putExtra("OFFICIAL_PARTY", o.getParty());
+        intent.putExtra("OFFICIAL_POS", pos);
+        startActivity(intent);
     }
 
     // menu
