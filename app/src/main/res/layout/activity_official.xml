@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OfficialActivity">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/blue"
         tools:layout_editor_absoluteX="167dp"
         tools:layout_editor_absoluteY="200dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/locationTextViewOfficial"
@@ -38,8 +33,7 @@
                 android:id="@+id/officialPositionTextViewOfficial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="5dp"
                 android:text="U.S. Senator"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -54,7 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:text="Tammy Duckworth"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -69,7 +62,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:text="(Democratic Party)"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -84,14 +76,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/missing"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/officialPartyTextViewOfficial" />
+
+            <ImageView
+                android:id="@+id/partyImageView"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dem_logo"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/officialImageView" />
 
             <LinearLayout
                 android:id="@+id/addressHorizontalLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/officialImageView"
                 android:orientation="horizontal">
 
                 <TextView
@@ -123,6 +130,9 @@
                 android:id="@+id/phoneHorizontalLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addressHorizontalLayout"
                 android:orientation="horizontal">
 
                 <TextView
@@ -154,6 +164,9 @@
                 android:id="@+id/emailHorizontalLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneHorizontalLayout"
                 android:orientation="horizontal">
 
                 <TextView
@@ -185,6 +198,9 @@
                 android:id="@+id/websiteHorizontalLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailHorizontalLayout"
                 android:orientation="horizontal">
 
                 <TextView
@@ -210,8 +226,6 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"/>
 
-            </LinearLayout>
-
         </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
