@@ -92,6 +92,9 @@ public class CivicDataRunnable implements Runnable {
         }
         parseJSON(s);
         // TODO: POPULATE MAINACTIVITY USING DATA HERE
+        // DATA TO BE PASSED
+        //   - normalized input -> city, state, zip
+        //   - officials data -> officials
     }
 
     private void parseJSON(String s) {
@@ -120,15 +123,18 @@ public class CivicDataRunnable implements Runnable {
                 }
             }
 
-            // officials array data
+            // // saving information for each official
             JSONArray officialsJSON = jsonObject.getJSONArray("officials");
             for (int i = 0; i < officialsJSON.length(); i++) {
 
                 JSONObject officialObject = officialsJSON.getJSONObject(i);
                 Official o = new Official();
 
-                // saving information for each official
+
                 o.setName(officialObject.getString("name"));
+
+                // official title is obtained by using the title that was paired
+                // with this officials index in the offices HashMap
                 o.setTitle(offices.get(i));
 
                 if (officialObject.has("party"))
@@ -161,6 +167,8 @@ public class CivicDataRunnable implements Runnable {
                     String addrString = "";
                     while (keys.hasNext()) {
                         String key = keys.next();
+
+                        // concatenating address lines and saving other address fields
                         if (key.contains("line"))
                             addrString += addrJSON.getString(key) + " ";
                         else {
@@ -190,6 +198,9 @@ public class CivicDataRunnable implements Runnable {
 
                     o.setSocialAccounts(socialChannels);
                 }
+
+                // saving official to list of officials
+                officials.add(o);
             }
         } catch (Exception e) {
             Log.d(TAG, "parseJSON: " + e.getMessage());
