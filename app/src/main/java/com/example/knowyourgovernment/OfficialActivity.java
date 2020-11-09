@@ -3,6 +3,7 @@ package com.example.knowyourgovernment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -32,7 +33,11 @@ public class OfficialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_official);
 
-        officialView = findViewById(R.id.officialView);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            officialView = findViewById(R.id.officialView);
+        else
+            officialView = findViewById(R.id.officialLayoutView);
+
         officialNameTextView = findViewById(R.id.officialNameTextViewOfficial);
         officialTitleTextView = findViewById(R.id.officialTitleTextViewOfficial);
         officialPartyTextView = findViewById(R.id.officialPartyTextViewOfficial);

@@ -1,7 +1,9 @@
 package com.example.knowyourgovernment;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +28,11 @@ public class PhotoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_detail);
 
-        photoView = findViewById(R.id.photoView);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            photoView = findViewById(R.id.photoView);
+        else
+            photoView = findViewById(R.id.photoLayoutView);
+
         officialNameTextView = findViewById(R.id.officialNameTextViewPhoto);
         officialTitleTextView = findViewById(R.id.officialTitleTextViewPhoto);
         partyImage = findViewById(R.id.partyImageViewPhoto);
