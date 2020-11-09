@@ -71,7 +71,7 @@
 
         <ImageView
             android:id="@+id/partyImageViewPhoto"
-            android:layout_width="60dp"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
