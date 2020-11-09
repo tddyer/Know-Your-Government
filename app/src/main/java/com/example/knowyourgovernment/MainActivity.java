@@ -17,6 +17,8 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -105,6 +107,15 @@ public class MainActivity extends AppCompatActivity
             officialList.add(temp);
         }
         officialsAdapter.notifyDataSetChanged();
+
+        // data api call
+        if (networkCheck()) {
+            CivicDataRunnable civicDataRunnable =
+                    new CivicDataRunnable(this, locationZipCode);
+            new Thread(civicDataRunnable).start();
+        } else {
+            connectionError();
+        }
     }
 
     // location services
@@ -191,6 +202,38 @@ public class MainActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // network checking
+
+    private boolean networkCheck() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null)
+            Log.d("MainActivity", "networkCheck: Error accessing connectivity manager");
+
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // TODO: CHANGE TO SPECIFIED HANDLING IN ASSIGNMENT DOC
+    public void connectionError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Stocks cannot be updated without a network connection");
+        builder.setTitle("No Network Connection");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    public void downloadFailed() {
+        Log.d("MainActivity", "downloadFailed: Couldn't download stock names");
     }
 
     // alert dialogs
