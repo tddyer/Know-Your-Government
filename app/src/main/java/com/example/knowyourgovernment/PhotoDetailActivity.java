@@ -38,7 +38,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
             // set background color
             photoView.setBackgroundColor(bundle.getInt("BG_COLOR"));
-            
+
         }
     }
 }

@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
             if (i % 2 == 0)
                 temp.setParty("Republican");
             else
-                temp.setParty("Democratic");
+                temp.setParty("Democrati");
 
             officialList.add(temp);
         }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ public class OfficialActivity extends AppCompatActivity {
     private TextView officialTitleTextView;
     private TextView officialPartyTextView;
     private ImageView officialImage;
+    private ImageView partyImage;
 
     Official official = new Official();
 
@@ -34,6 +36,9 @@ public class OfficialActivity extends AppCompatActivity {
         officialNameTextView = findViewById(R.id.officialNameTextViewOfficial);
         officialTitleTextView = findViewById(R.id.officialTitleTextViewOfficial);
         officialPartyTextView = findViewById(R.id.officialPartyTextViewOfficial);
+        officialImage = findViewById(R.id.officialImageView);
+        partyImage = findViewById(R.id.partyImageView);
+
 
         // populating official data from the received intent
         bundle = getIntent().getExtras();
@@ -44,11 +49,17 @@ public class OfficialActivity extends AppCompatActivity {
             officialPartyTextView.setText(String.format("(%s Party)", official.getParty()));
         }
 
+        // set background color
         setBackgroundColor();
         officialView.setBackgroundColor(bgColor);
 
+        // set official party image
+        if (official.getParty().equals("Republican") || official.getParty().equals("Democratic"))
+            partyImage.setImageResource(getPartyImage(official.getParty()));
+        else
+            partyImage.setVisibility(View.GONE);
+
         // creating navigation to PhotoDetailActivity using onClickListener
-        officialImage = findViewById(R.id.officialImageView);
         officialImage.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), PhotoDetailActivity.class);
             intent.putExtra("OFFICIAL_NAME", official.getName());
@@ -66,6 +77,14 @@ public class OfficialActivity extends AppCompatActivity {
         temp.setTitle(bundle.getString("OFFICIAL_TITLE"));
         temp.setParty(bundle.getString("OFFICIAL_PARTY"));
         return temp;
+    }
+
+    // set party image based off of official's political affiliation
+    public static int getPartyImage(String party) {
+        if (party.equals("Republican"))
+            return R.drawable.rep_logo;
+        else
+            return R.drawable.dem_logo;
     }
 
     // sets background color based off of the Official's political affiliation
