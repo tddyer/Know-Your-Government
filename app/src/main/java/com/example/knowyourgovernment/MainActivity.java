@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("OFFICIAL_NAME", o.getName());
         intent.putExtra("OFFICIAL_TITLE", o.getTitle());
         intent.putExtra("OFFICIAL_PARTY", o.getParty());
-        intent.putExtra("OFFICIAL_POS", pos);
         startActivity(intent);
     }
 

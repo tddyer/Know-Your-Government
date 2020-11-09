@@ -19,9 +19,9 @@ public class OfficialActivity extends AppCompatActivity {
     private TextView officialPartyTextView;
     private ImageView officialImage;
 
-    // selected official information
     Official official = new Official();
-    int pos = -1;
+
+    int bgColor;
 
     private Bundle bundle;
 
@@ -45,17 +45,22 @@ public class OfficialActivity extends AppCompatActivity {
         }
 
         setBackgroundColor();
+        officialView.setBackgroundColor(bgColor);
 
         // creating navigation to PhotoDetailActivity using onClickListener
         officialImage = findViewById(R.id.officialImageView);
         officialImage.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), PhotoDetailActivity.class);
+            intent.putExtra("OFFICIAL_NAME", official.getName());
+            intent.putExtra("OFFICIAL_TITLE", official.getTitle());
+            intent.putExtra("OFFICIAL_PARTY", official.getParty());
+            intent.putExtra("BG_COLOR", bgColor);
             startActivity(intent);
         });
     }
 
     // handle received official data
-    Official handleOfficialData(Bundle bundle) {
+    public static Official handleOfficialData(Bundle bundle) {
         Official temp = new Official();
         temp.setName(bundle.getString("OFFICIAL_NAME"));
         temp.setTitle(bundle.getString("OFFICIAL_TITLE"));
@@ -64,12 +69,12 @@ public class OfficialActivity extends AppCompatActivity {
     }
 
     // sets background color based off of the Official's political affiliation
-    void setBackgroundColor() {
+    public void setBackgroundColor() {
         if (official.getParty().equals("Republican"))
-            officialView.setBackgroundColor(Color.parseColor("#FFFF0000"));
+            bgColor = Color.parseColor("#FFFF0000");
         else if (official.getParty().equals("Democratic"))
-            officialView.setBackgroundColor(Color.parseColor("#FF0000FF"));
+            bgColor = Color.parseColor("#FF0000FF");
         else
-            officialView.setBackgroundColor(Color.parseColor("#FF000000"));
+            bgColor = Color.parseColor("#FF000000");
     }
 }
