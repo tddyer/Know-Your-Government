@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class CivicDataRunnable implements Runnable {
@@ -129,8 +130,66 @@ public class CivicDataRunnable implements Runnable {
                 // saving information for each official
                 o.setName(officialObject.getString("name"));
                 o.setTitle(offices.get(i));
-                o.setParty(officialObject.getString("party"));
 
+                if (officialObject.has("party"))
+                    o.setParty(officialObject.getString("party"));
+                else
+                    o.setParty("Unknown");
+
+                if (officialObject.has("phones"))
+                    o.setPhoneNumber(officialObject.getJSONArray("phones").getString(0));
+
+                if (officialObject.has("urls"))
+                    o.setWebsite(officialObject.getJSONArray("urls").getString(0));
+
+                if (officialObject.has("emails"))
+                    o.setEmail(officialObject.getJSONArray("emails").getString(0));
+
+                if (officialObject.has("photoUrl"))
+                    o.setPhotoUrl(officialObject.getString("photoUrl"));
+
+                // addresses handling
+                JSONArray addrsJSON = officialObject.getJSONArray("address");
+                ArrayList<HashMap<String, String>> addresses = new ArrayList<>();
+
+                for (int j = 0; j < addrsJSON.length(); j++) {
+
+                    JSONObject addrJSON = addrsJSON.getJSONObject(j);
+                    Iterator<String> keys = addrJSON.keys();
+                    HashMap<String, String> address = new HashMap<>();
+
+                    String addrString = "";
+                    while (keys.hasNext()) {
+                        String key = keys.next();
+                        if (key.contains("line"))
+                            addrString += addrJSON.getString(key) + " ";
+                        else {
+                            address.put(key, addrJSON.getString(key));
+                        }
+                    }
+                    address.put("line", addrString);
+                    addresses.add(address);
+                }
+
+                o.setAddresses(addresses);
+
+                // social media channel handling
+                if (officialObject.has("channels")) {
+                    JSONArray socialChannelsJSON = officialObject.getJSONArray("channels");
+                    ArrayList<HashMap<String, String>> socialChannels = new ArrayList<>();
+
+                    for (int j = 0; j < socialChannelsJSON.length(); j++) {
+
+                        JSONObject socialChannelJSON = socialChannelsJSON.getJSONObject(j);
+                        HashMap<String, String> socialChannel = new HashMap<>();
+                        socialChannel.put(socialChannelJSON.getString("type"),
+                                socialChannelJSON.getString("id"));
+
+                        socialChannels.add(socialChannel);
+                    }
+
+                    o.setSocialAccounts(socialChannels);
+                }
             }
         } catch (Exception e) {
             Log.d(TAG, "parseJSON: " + e.getMessage());
