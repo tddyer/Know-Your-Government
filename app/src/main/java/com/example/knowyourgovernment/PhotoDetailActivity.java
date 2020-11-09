@@ -3,6 +3,7 @@ package com.example.knowyourgovernment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
     private TextView officialNameTextView;
     private TextView officialTitleTextView;
     private ImageView officialImage;
+    private ImageView partyImage;
 
     private Bundle bundle;
 
@@ -27,6 +29,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
         photoView = findViewById(R.id.photoView);
         officialNameTextView = findViewById(R.id.officialNameTextViewPhoto);
         officialTitleTextView = findViewById(R.id.officialTitleTextViewPhoto);
+        partyImage = findViewById(R.id.partyImageViewPhoto);
 
         // populating official data from the received intent
         bundle = getIntent().getExtras();
@@ -38,6 +41,12 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
             // set background color
             photoView.setBackgroundColor(bundle.getInt("BG_COLOR"));
+
+            // set official party image
+            if (official.getParty().equals("Republican") || official.getParty().equals("Democratic"))
+                partyImage.setImageResource(OfficialActivity.getPartyImage(official.getParty()));
+            else
+                partyImage.setVisibility(View.GONE);
 
         }
     }
