@@ -15,9 +15,9 @@
         android:layout_marginTop="10dp"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/purple_theme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="US Senator" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/officialNameTextView"
@@ -28,10 +28,10 @@
         android:layout_marginBottom="10dp"
         android:textSize="18sp"
         android:textAlignment="viewEnd"
+        android:textColor="@color/purple_theme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/officialTitleTextView"
-        tools:text="Jonathon Dinkelberry (Democratic Party)"/>
+        app:layout_constraintTop_toBottomOf="@+id/officialTitleTextView"/>
 
     <ImageView
         android:id="@+id/listSeparator"

@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -52,13 +53,18 @@ public class MainActivity extends AppCompatActivity
     private String locationZipCode = null;
     private String locationCity = null;
     private String locationState = null;
-    private static int LOCATION_REQUEST_CODE = 1001;
+    private static final int LOCATION_REQUEST_CODE = 1001;
     private Geocoder geocoder;
+
+    // layout vars
+    private TextView locationTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        locationTextView = findViewById(R.id.locationTextView);
 
         // setting initial location to location of the device
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -94,20 +100,6 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(officialsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // testing recycler
-        for (int i = 0; i < 20; i++) {
-            Official temp = new Official();
-            temp.setName("Random Official");
-            temp.setTitle("Vice-President of the United States");
-            if (i % 2 == 0)
-                temp.setParty("Republican");
-            else
-                temp.setParty("Democrati");
-
-            officialList.add(temp);
-        }
-        officialsAdapter.notifyDataSetChanged();
-
         // data api call
         if (networkCheck()) {
             CivicDataRunnable civicDataRunnable =
@@ -116,6 +108,20 @@ public class MainActivity extends AppCompatActivity
         } else {
             connectionError();
         }
+    }
+
+    // methods for returning from runnable
+
+    public void updateOfficialFromRunnable(ArrayList<Official> oList) {
+        officialList.addAll(oList);
+        officialsAdapter.notifyDataSetChanged();
+    }
+
+    public void updateLocationFromRunnable(String c, String s, String z) {
+        locationCity = c;
+        locationState = s;
+        locationZipCode = z;
+        refreshLocationTextViewWithZip();
     }
 
     // location services
@@ -154,6 +160,16 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+    }
+
+    private void refreshLocationTextViewWithZip() {
+        String loc = locationCity + ", " + locationState + " " + locationZipCode;
+        locationTextView.setText(loc);
+    }
+
+    private void refreshLocationTextViewWithCity() {
+        String loc = locationCity + ", " + locationState;
+        locationTextView.setText(loc);
     }
 
     // Overriding onClick methods

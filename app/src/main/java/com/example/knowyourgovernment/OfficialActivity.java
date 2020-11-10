@@ -51,7 +51,7 @@ public class OfficialActivity extends AppCompatActivity {
             official = handleOfficialData(bundle);
             officialNameTextView.setText(official.getName());
             officialTitleTextView.setText(official.getTitle());
-            officialPartyTextView.setText(String.format("(%s Party)", official.getParty()));
+            officialPartyTextView.setText(String.format("(%s)", official.getParty()));
         }
 
         // set background color
@@ -94,9 +94,9 @@ public class OfficialActivity extends AppCompatActivity {
 
     // sets background color based off of the Official's political affiliation
     public void setBackgroundColor() {
-        if (official.getParty().equals("Republican"))
+        if (official.getParty().contains("Republican"))
             bgColor = Color.parseColor("#FFFF0000");
-        else if (official.getParty().equals("Democratic"))
+        else if (official.getParty().contains("Democrat"))
             bgColor = Color.parseColor("#FF0000FF");
         else
             bgColor = Color.parseColor("#FF000000");

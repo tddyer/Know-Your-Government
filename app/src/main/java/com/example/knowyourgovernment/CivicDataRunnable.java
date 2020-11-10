@@ -95,6 +95,8 @@ public class CivicDataRunnable implements Runnable {
         // DATA TO BE PASSED
         //   - normalized input -> city, state, zip
         //   - officials data -> officials
+        mainActivity.runOnUiThread(() -> mainActivity.updateOfficialFromRunnable(officials));
+        mainActivity.runOnUiThread(() -> mainActivity.updateLocationFromRunnable(city, state, zip));
     }
 
     private void parseJSON(String s) {
