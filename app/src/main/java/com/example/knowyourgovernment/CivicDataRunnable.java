@@ -157,52 +157,57 @@ public class CivicDataRunnable implements Runnable {
                     o.setPhotoUrl(officialObject.getString("photoUrl"));
 
                 // addresses handling
-                JSONArray addrsJSON = officialObject.getJSONArray("address");
-                ArrayList<HashMap<String, String>> addresses = new ArrayList<>();
+                if (officialObject.has("address")) {
+                    JSONArray addrsJSON = officialObject.getJSONArray("address");
+                    ArrayList<HashMap<String, String>> addresses = new ArrayList<>();
 
-                for (int j = 0; j < addrsJSON.length(); j++) {
+                    for (int j = 0; j < addrsJSON.length(); j++) {
 
-                    JSONObject addrJSON = addrsJSON.getJSONObject(j);
-                    Iterator<String> keys = addrJSON.keys();
-                    HashMap<String, String> address = new HashMap<>();
+                        JSONObject addrJSON = addrsJSON.getJSONObject(j);
+                        Iterator<String> keys = addrJSON.keys();
+                        HashMap<String, String> address = new HashMap<>();
 
-                    String addrString = "";
-                    while (keys.hasNext()) {
-                        String key = keys.next();
+                        String addrString = "";
+                        while (keys.hasNext()) {
+                            String key = keys.next();
 
-                        // concatenating address lines and saving other address fields
-                        if (key.contains("line"))
-                            addrString += addrJSON.getString(key) + " ";
-                        else {
-                            address.put(key, addrJSON.getString(key));
+                            // concatenating address lines and saving other address fields
+                            if (key.contains("line"))
+                                addrString += addrJSON.getString(key) + " ";
+                            else {
+                                address.put(key, addrJSON.getString(key));
+                            }
                         }
+                        address.put("line", addrString);
+                        addresses.add(address);
                     }
-                    address.put("line", addrString);
-                    addresses.add(address);
+
+                    o.setAddresses(addresses);
                 }
 
-                o.setAddresses(addresses);
-
-                // social media channel handling
                 if (officialObject.has("channels")) {
-                    JSONArray socialChannelsJSON = officialObject.getJSONArray("channels");
-                    ArrayList<HashMap<String, String>> socialChannels = new ArrayList<>();
+                    // social media channel handling
+                    if (officialObject.has("channels")) {
+                        JSONArray socialChannelsJSON = officialObject.getJSONArray("channels");
+                        ArrayList<HashMap<String, String>> socialChannels = new ArrayList<>();
 
-                    for (int j = 0; j < socialChannelsJSON.length(); j++) {
+                        for (int j = 0; j < socialChannelsJSON.length(); j++) {
 
-                        JSONObject socialChannelJSON = socialChannelsJSON.getJSONObject(j);
-                        HashMap<String, String> socialChannel = new HashMap<>();
-                        socialChannel.put(socialChannelJSON.getString("type"),
-                                socialChannelJSON.getString("id"));
+                            JSONObject socialChannelJSON = socialChannelsJSON.getJSONObject(j);
+                            HashMap<String, String> socialChannel = new HashMap<>();
+                            socialChannel.put(socialChannelJSON.getString("type"),
+                                    socialChannelJSON.getString("id"));
 
-                        socialChannels.add(socialChannel);
+                            socialChannels.add(socialChannel);
+                        }
+
+                        o.setSocialAccounts(socialChannels);
                     }
-
-                    o.setSocialAccounts(socialChannels);
                 }
 
                 // saving official to list of officials
                 officials.add(o);
+
             }
         } catch (Exception e) {
             Log.d(TAG, "parseJSON: " + e.getMessage());

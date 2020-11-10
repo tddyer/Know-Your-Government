@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity
     // methods for returning from runnable
 
     public void updateOfficialFromRunnable(ArrayList<Official> oList) {
+        officialList.clear();
         officialList.addAll(oList);
         officialsAdapter.notifyDataSetChanged();
     }
@@ -167,11 +169,6 @@ public class MainActivity extends AppCompatActivity
         locationTextView.setText(loc);
     }
 
-    private void refreshLocationTextViewWithCity() {
-        String loc = locationCity + ", " + locationState;
-        locationTextView.setText(loc);
-    }
-
     // Overriding onClick methods
 
     @Override
@@ -190,9 +187,50 @@ public class MainActivity extends AppCompatActivity
 
     void launchOfficialActivity(Official o, int pos) {
         Intent intent = new Intent(this, OfficialActivity.class);
+        intent.putExtra("LOCATION_STRING", locationTextView.getText().toString());
         intent.putExtra("OFFICIAL_NAME", o.getName());
         intent.putExtra("OFFICIAL_TITLE", o.getTitle());
         intent.putExtra("OFFICIAL_PARTY", o.getParty());
+
+        if (o.getAddresses() != null) {
+            String addressesString = "";
+            ArrayList<HashMap<String, String>> addrs = o.getAddresses();
+            int count = 1;
+            for (HashMap<String, String> addr : addrs) {
+                if (count == addrs.size())
+                    addressesString = addr.get("line") + addr.get("city") + ", " + addr.get("state") + " " + addr.get("zip");
+                else
+                    addressesString = addr.get("line") + addr.get("city") + ", " + addr.get("state") + " " + addr.get("zip") + "\n";
+            }
+            intent.putExtra("OFFICIAL_ADDRESSES", addressesString);
+        }
+
+        if (o.getPhoneNumber() != null) {
+            intent.putExtra("OFFICIAL_PHONE", o.getPhoneNumber());
+        }
+
+        if (o.getEmail() != null) {
+            intent.putExtra("OFFICIAL_EMAIL", o.getEmail());
+        }
+
+        if (o.getWebsite() != null) {
+            intent.putExtra("OFFICIAL_WEBSITE", o.getWebsite());
+        }
+
+        if (o.getPhotoUrl() != null) {
+            intent.putExtra("OFFICIAL_PHOTO", o.getPhotoUrl());
+        }
+
+        if (o.getSocialAccounts() != null) {
+            ArrayList<HashMap<String, String>> socials = o.getSocialAccounts();
+            for (HashMap<String, String> social : socials) {
+                for (Map.Entry<String, String> entry : social.entrySet()) {
+                    System.out.println(entry.getKey() + ": " + entry.getValue());
+                    intent.putExtra(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
         startActivity(intent);
     }
 
@@ -257,16 +295,25 @@ public class MainActivity extends AppCompatActivity
     public void updateLocation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setGravity(Gravity.CENTER);
         builder.setView(input);
         builder.setPositiveButton("OK", (dialog, id) -> {
-            // TODO: Update location here
+
+            String inputString = String.valueOf(input.getText());
+
+            // data api call
+            if (networkCheck()) {
+                CivicDataRunnable civicDataRunnable =
+                        new CivicDataRunnable(this, inputString);
+                new Thread(civicDataRunnable).start();
+            } else {
+                connectionError();
+            }
         });
         builder.setNegativeButton("CANCEL", (dialog, id) -> {
             // do nothing
         });
-//        builder.setTitle("Stock Selection");
         builder.setMessage("Enter a City, State or a Zip Code: ");
 
         AlertDialog dialog = builder.create();

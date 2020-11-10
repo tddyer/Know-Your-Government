@@ -9,6 +9,7 @@ public class Official {
     String name;
     String party;
     String photoUrl;
+    String addressesString;
 
     ArrayList<HashMap<String, String>> addresses;
 
@@ -89,5 +90,13 @@ public class Official {
 
     public void setSocialAccounts(ArrayList<HashMap<String, String>> socialAccounts) {
         this.socialAccounts = socialAccounts;
+    }
+
+    public String getAddressesString() {
+        return addressesString;
+    }
+
+    public void setAddressesString(String addressesString) {
+        this.addressesString = addressesString;
     }
 }
