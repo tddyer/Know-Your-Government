@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.view.View;
@@ -126,6 +127,8 @@ public class OfficialActivity extends AppCompatActivity {
                         if (label.equals("Facebook")) {
                             fbImage.setVisibility(View.VISIBLE);
 
+                            fbImage.setOnClickListener(v -> fbOnClick(link));
+
                             // sets padding between social icons
                             ImageView b1 = findViewById(R.id.blankImageView);
                             b1.setVisibility(View.INVISIBLE);
@@ -133,12 +136,16 @@ public class OfficialActivity extends AppCompatActivity {
                         if (label.equals("Twitter")) {
                             twitterImage.setVisibility(View.VISIBLE);
 
+                            twitterImage.setOnClickListener(v -> twitterOnClick(link));
+
                             // sets padding between social icons
                             ImageView b2 = findViewById(R.id.blankImageView2);
                             b2.setVisibility(View.INVISIBLE);
                         }
                         if (label.equals("YouTube")) {
                             ytImage.setVisibility(View.VISIBLE);
+
+                            ytImage.setOnClickListener(v -> ytOnClick(link));
                         }
                     }
                 }
@@ -235,5 +242,54 @@ public class OfficialActivity extends AppCompatActivity {
             bgColor = Color.parseColor("#FF0000FF");
         else
             bgColor = Color.parseColor("#FF000000");
+    }
+
+    // social media intents
+
+    void fbOnClick(String link) {
+        String fbURL = "https://www.facebook.com/" + link;
+        Intent intent;
+        String usageURL;
+        try {
+            getPackageManager().getPackageInfo("com.facebook.katana", 0);
+            int versionCode = getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
+            if (versionCode >= 3002850) {
+                usageURL = "fb://facewebmodal/f?href=" + fbURL;
+            } else {
+                usageURL = "fb://page/" + link;
+            }
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(usageURL));
+        } catch (Exception e) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fbURL));
+        }
+        startActivity(intent);
+    }
+
+    void twitterOnClick(String link) {
+        String twitterAppUrl = "twitter://user?screen_name=" + link;
+        String twitterWebUrl = "https://twitter.com/" + link;
+
+        Intent intent;
+        try {
+            getPackageManager().getPackageInfo("com.twitter.android", 0);
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitterAppUrl));
+        } catch (Exception e) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitterWebUrl));
+        }
+        startActivity(intent);
+    }
+
+    void ytOnClick(String link) {
+//        String ytAppUrl = "youtube://user?screen_name=" + link;
+        String ytUrl = "https://youtube.com/" + link;
+
+        Intent intent;
+        try {
+            getPackageManager().getPackageInfo("com.goodle.android.youtube", 0);
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ytUrl));
+        } catch (Exception e) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ytUrl));
+        }
+        startActivity(intent);
     }
 }
