@@ -3,12 +3,17 @@ package com.example.knowyourgovernment;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 public class PhotoDetailActivity extends AppCompatActivity {
 
@@ -35,25 +40,41 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
         officialNameTextView = findViewById(R.id.officialNameTextViewPhoto);
         officialTitleTextView = findViewById(R.id.officialTitleTextViewPhoto);
+        officialImage = findViewById(R.id.officialImageView);
         partyImage = findViewById(R.id.partyImageViewPhoto);
 
         // populating official data from the received intent
         bundle = getIntent().getExtras();
         if (bundle != null) {
+
+            // set background color
+            photoView.setBackgroundColor(bundle.getInt("BG_COLOR"));
+
             // handle official data
             official = OfficialActivity.handleOfficialData(bundle);
             officialNameTextView.setText(official.getName());
             officialTitleTextView.setText(official.getTitle());
 
-            // set background color
-            photoView.setBackgroundColor(bundle.getInt("BG_COLOR"));
+            System.out.println(official.getPhotoUrl());
+
+            loadImage(official.getPhotoUrl());
 
             // set official party image
-            if (official.getParty().equals("Republican") || official.getParty().equals("Democratic"))
+            if (official.getParty().contains("Republican") || official.getParty().contains("Democrat")) {
                 partyImage.setImageResource(OfficialActivity.getPartyImage(official.getParty()));
-            else
+                partyImage.setOnClickListener(v -> startActivity(OfficialActivity.partyOnClick(official.getParty())));
+            } else {
                 partyImage.setVisibility(View.GONE);
+            }
 
         }
+    }
+
+    // Picasso image download
+    public void loadImage(final String url) {
+        Picasso.get().load(url)
+                .error(R.drawable.brokenimage)
+                .placeholder(R.drawable.placeholder)
+                .into(officialImage);
     }
 }

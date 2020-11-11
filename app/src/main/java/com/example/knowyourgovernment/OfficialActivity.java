@@ -10,11 +10,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -172,20 +174,10 @@ public class OfficialActivity extends AppCompatActivity {
         // set official party image
         if (official.getParty().contains("Republican") || official.getParty().contains("Democrat")) {
             partyImage.setImageResource(getPartyImage(official.getParty()));
-            partyImage.setOnClickListener(v -> partyOnClick(official.getParty()));
+            partyImage.setOnClickListener(v -> startActivity(partyOnClick(official.getParty())));
         } else {
             partyImage.setVisibility(View.GONE);
         }
-
-        // creating navigation to PhotoDetailActivity using onClickListener
-        officialImage.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), PhotoDetailActivity.class);
-            intent.putExtra("OFFICIAL_NAME", official.getName());
-            intent.putExtra("OFFICIAL_TITLE", official.getTitle());
-            intent.putExtra("OFFICIAL_PARTY", official.getParty());
-            intent.putExtra("BG_COLOR", bgColor);
-            startActivity(intent);
-        });
     }
 
     // handle received official data
@@ -311,7 +303,7 @@ public class OfficialActivity extends AppCompatActivity {
         }
     }
 
-    void partyOnClick(String party) {
+    public static Intent partyOnClick(String party) {
         String url;
         if (party.contains("Republican")) {
             url = "https://www.gop.com";
@@ -319,7 +311,7 @@ public class OfficialActivity extends AppCompatActivity {
             url = "https://democrats.org";
         }
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(intent);
+        return intent;
     }
 
     // Picasso image download
@@ -327,6 +319,27 @@ public class OfficialActivity extends AppCompatActivity {
         Picasso.get().load(url)
                 .error(R.drawable.brokenimage)
                 .placeholder(R.drawable.placeholder)
-                .into(officialImage);
+                .into(officialImage,
+                        new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                                // if an image is succesfully loaded, set navigation to photo detil activity
+                                officialImage.setOnClickListener(v -> {
+                                    Intent intent = new Intent(getApplicationContext(), PhotoDetailActivity.class);
+                                    intent.putExtra("OFFICIAL_NAME", official.getName());
+                                    intent.putExtra("OFFICIAL_TITLE", official.getTitle());
+                                    intent.putExtra("OFFICIAL_PARTY", official.getParty());
+                                    intent.putExtra("OFFICIAL_PHOTO", url);
+                                    intent.putExtra("BG_COLOR", bgColor);
+                                    startActivity(intent);
+                                });
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Log.d("IMG DOWNLOAD", "onError: " + e.getMessage());
+                            }
+                        });
     }
 }
