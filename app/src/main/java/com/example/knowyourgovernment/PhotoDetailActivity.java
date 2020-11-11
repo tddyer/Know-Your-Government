@@ -22,6 +22,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
     private TextView officialNameTextView;
     private TextView officialTitleTextView;
     private ImageView officialImage;
+    private TextView locationTextView;
     private ImageView partyImage;
 
     private Bundle bundle;
@@ -41,11 +42,13 @@ public class PhotoDetailActivity extends AppCompatActivity {
         officialNameTextView = findViewById(R.id.officialNameTextViewPhoto);
         officialTitleTextView = findViewById(R.id.officialTitleTextViewPhoto);
         officialImage = findViewById(R.id.officialImageView);
+        locationTextView = findViewById(R.id.locationTextViewPhoto);
         partyImage = findViewById(R.id.partyImageViewPhoto);
 
         // populating official data from the received intent
         bundle = getIntent().getExtras();
         if (bundle != null) {
+            locationTextView.setText(bundle.getString("LOCATION_STRING"));
 
             // set background color
             photoView.setBackgroundColor(bundle.getInt("BG_COLOR"));

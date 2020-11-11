@@ -23,4 +23,6 @@
     <string name="facebook_icon">Facebook Icon</string>
     <string name="political_official_image">Political Official Image</string>
     <string name="politial_official_party_image">Politial Official Party Image</string>
+    <string name="no_network_connection">No Network Connection</string>
+    <string name="no_network_data">Data cannot be accessed/loaded without an internet connection.</string>
 </resources>

@@ -331,6 +331,7 @@ public class OfficialActivity extends AppCompatActivity {
                                     intent.putExtra("OFFICIAL_TITLE", official.getTitle());
                                     intent.putExtra("OFFICIAL_PARTY", official.getParty());
                                     intent.putExtra("OFFICIAL_PHOTO", url);
+                                    intent.putExtra("LOCATION_STRING", locationTextView.getText().toString());
                                     intent.putExtra("BG_COLOR", bgColor);
                                     startActivity(intent);
                                 });

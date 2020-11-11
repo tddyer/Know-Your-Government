@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,13 +102,17 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(officialsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // holds the network error messages
+        LinearLayout err = findViewById(R.id.noNetworkLayout);
+
         // data api call
         if (networkCheck()) {
+            err.setVisibility(View.GONE);
             CivicDataRunnable civicDataRunnable =
                     new CivicDataRunnable(this, locationZipCode);
             new Thread(civicDataRunnable).start();
         } else {
-            connectionError();
+            err.setVisibility(View.VISIBLE);
         }
     }
 
@@ -137,6 +142,9 @@ public class MainActivity extends AppCompatActivity
                     grantResults[0] == PERMISSION_GRANTED) {
                 setLocation();
                 return;
+            } else {
+                TextView location = findViewById(R.id.locationTextView);
+                location.setText("No Data For Location");
             }
         }
     }
@@ -157,10 +165,16 @@ public class MainActivity extends AppCompatActivity
                     locationZipCode = addresses.get(0).getPostalCode();
                     locationState = addresses.get(0).getAdminArea();
                     locationCity = addresses.get(0).getLocality();
+                } else {
+                    TextView location = findViewById(R.id.locationTextView);
+                    location.setText("No Data For Location");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } {
+            TextView location = findViewById(R.id.locationTextView);
+            location.setText("No Data For Location");
         }
     }
 
@@ -301,13 +315,17 @@ public class MainActivity extends AppCompatActivity
 
             String inputString = String.valueOf(input.getText());
 
+            // holds the network error messages
+            LinearLayout err = findViewById(R.id.noNetworkLayout);
+
             // data api call
             if (networkCheck()) {
+                err.setVisibility(View.GONE);
                 CivicDataRunnable civicDataRunnable =
                         new CivicDataRunnable(this, inputString);
                 new Thread(civicDataRunnable).start();
             } else {
-                connectionError();
+                err.setVisibility(View.VISIBLE);
             }
         });
         builder.setNegativeButton("CANCEL", (dialog, id) -> {
