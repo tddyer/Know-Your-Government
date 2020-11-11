@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -78,6 +79,7 @@ public class OfficialActivity extends AppCompatActivity {
 
             if (official.getAddressesString() != null) {
                 officialAddressTextView.setText(official.getAddressesString());
+                Linkify.addLinks(officialAddressTextView, Linkify.MAP_ADDRESSES);
             } else {
                 TextView addrPlaceholder = findViewById(R.id.addressPlaceholderTextViewOfficial);
                 addrPlaceholder.setVisibility(View.GONE);
@@ -86,6 +88,7 @@ public class OfficialActivity extends AppCompatActivity {
 
             if (official.getPhoneNumber() != null) {
                 officialPhoneTextView.setText(official.getPhoneNumber());
+                Linkify.addLinks(officialPhoneTextView, Linkify.PHONE_NUMBERS);
             } else {
                 TextView phonePlaceholder = findViewById(R.id.phonePlaceholderTextViewOfficial);
                 phonePlaceholder.setVisibility(View.GONE);
@@ -94,6 +97,7 @@ public class OfficialActivity extends AppCompatActivity {
 
             if (official.getEmail() != null) {
                 officialEmailTextView.setText(official.getEmail());
+                Linkify.addLinks(officialEmailTextView, Linkify.EMAIL_ADDRESSES);
             } else {
                 TextView emailPlaceholder = findViewById(R.id.emailPlaceholderTextViewOfficial);
                 emailPlaceholder.setVisibility(View.GONE);
@@ -102,6 +106,7 @@ public class OfficialActivity extends AppCompatActivity {
 
             if (official.getWebsite() != null) {
                 officialWebsiteTextView.setText(official.getWebsite());
+                Linkify.addLinks(officialWebsiteTextView, Linkify.WEB_URLS);
             } else {
                 TextView websitePlaceholder = findViewById(R.id.websitePlaceholderTextViewOfficial);
                 websitePlaceholder.setVisibility(View.GONE);
