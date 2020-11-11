@@ -2,6 +2,7 @@ package com.example.knowyourgovernment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -14,9 +15,12 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class OfficialActivity extends AppCompatActivity {
 
@@ -30,6 +34,7 @@ public class OfficialActivity extends AppCompatActivity {
     private TextView officialPhoneTextView;
     private TextView officialEmailTextView;
     private TextView officialWebsiteTextView;
+
     private ImageView officialImage;
     private ImageView partyImage;
     private ImageView twitterImage;
@@ -60,6 +65,7 @@ public class OfficialActivity extends AppCompatActivity {
         officialPhoneTextView = findViewById(R.id.phoneTextViewOfficial);
         officialEmailTextView = findViewById(R.id.emailTextViewOfficial);
         officialWebsiteTextView = findViewById(R.id.websiteTextViewOfficial);
+
         officialImage = findViewById(R.id.officialImageView);
         partyImage = findViewById(R.id.partyImageView);
         twitterImage = findViewById(R.id.twitterImageView);
@@ -151,6 +157,12 @@ public class OfficialActivity extends AppCompatActivity {
                 }
             }
 
+            // image download
+            String imageURL = official.getPhotoUrl();
+            if (imageURL != null) {
+                loadImage(imageURL);
+            }
+
         }
 
         // set background color
@@ -158,10 +170,12 @@ public class OfficialActivity extends AppCompatActivity {
         officialView.setBackgroundColor(bgColor);
 
         // set official party image
-        if (official.getParty().contains("Republican") || official.getParty().contains("Democrat"))
+        if (official.getParty().contains("Republican") || official.getParty().contains("Democrat")) {
             partyImage.setImageResource(getPartyImage(official.getParty()));
-        else
+            partyImage.setOnClickListener(v -> partyOnClick(official.getParty()));
+        } else {
             partyImage.setVisibility(View.GONE);
+        }
 
         // creating navigation to PhotoDetailActivity using onClickListener
         officialImage.setOnClickListener(v -> {
@@ -247,9 +261,11 @@ public class OfficialActivity extends AppCompatActivity {
     // social media intents
 
     void fbOnClick(String link) {
+
         String fbURL = "https://www.facebook.com/" + link;
         Intent intent;
         String usageURL;
+
         try {
             getPackageManager().getPackageInfo("com.facebook.katana", 0);
             int versionCode = getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
@@ -266,10 +282,11 @@ public class OfficialActivity extends AppCompatActivity {
     }
 
     void twitterOnClick(String link) {
+
         String twitterAppUrl = "twitter://user?screen_name=" + link;
         String twitterWebUrl = "https://twitter.com/" + link;
-
         Intent intent;
+
         try {
             getPackageManager().getPackageInfo("com.twitter.android", 0);
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitterAppUrl));
@@ -280,16 +297,36 @@ public class OfficialActivity extends AppCompatActivity {
     }
 
     void ytOnClick(String link) {
-//        String ytAppUrl = "youtube://user?screen_name=" + link;
-        String ytUrl = "https://youtube.com/" + link;
 
+        String ytUrl = "https://youtube.com/" + link;
         Intent intent;
+
         try {
-            getPackageManager().getPackageInfo("com.goodle.android.youtube", 0);
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ytUrl));
-        } catch (Exception e) {
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ytUrl));
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setPackage("com.goodle.android.youtube");
+            intent.setData(Uri.parse(ytUrl));
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ytUrl)));
         }
+    }
+
+    void partyOnClick(String party) {
+        String url;
+        if (party.contains("Republican")) {
+            url = "https://www.gop.com";
+        } else {
+            url = "https://democrats.org";
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
+    }
+
+    // Picasso image download
+    public void loadImage(final String url) {
+        Picasso.get().load(url)
+                .error(R.drawable.brokenimage)
+                .placeholder(R.drawable.placeholder)
+                .into(officialImage);
     }
 }

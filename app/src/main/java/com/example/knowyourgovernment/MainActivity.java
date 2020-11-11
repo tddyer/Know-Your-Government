@@ -225,7 +225,6 @@ public class MainActivity extends AppCompatActivity
             ArrayList<HashMap<String, String>> socials = o.getSocialAccounts();
             for (HashMap<String, String> social : socials) {
                 for (Map.Entry<String, String> entry : social.entrySet()) {
-                    System.out.println(entry.getKey() + ": " + entry.getValue());
                     intent.putExtra(entry.getKey(), entry.getValue());
                 }
             }
